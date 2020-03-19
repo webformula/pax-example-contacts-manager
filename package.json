@@ -1,0 +1,25 @@
+{
+  "name": "pax-example-contacts-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server ./ -p 8080 -o /app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webformula/pax-example-contacts-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webformula/pax-example-contacts-manager/issues"
+  },
+  "homepage": "https://github.com/webformula/pax-example-contacts-manager#readme",
+  "dependencies": {
+    "@webformula/pax-core": "^0.8.0"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.1"
+  }
+}
