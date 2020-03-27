@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/webformula/pax-example-contacts-manager#readme",
   "dependencies": {
+    "@webformula/pax-components": "file:../pax-components",
     "@webformula/pax-core": "^0.8.0"
   },
   "devDependencies": {

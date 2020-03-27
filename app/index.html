@@ -2,10 +2,32 @@
 <html lang='en'>
   <head>
     <meta http-equiv='Cache-Control' content='no-store' />
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>default</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="../node_modules/@webformula/pax-components/local-dist/theme.css" rel="stylesheet">
+    <link href="../node_modules/@webformula/pax-components/local-dist/entry.css" rel="stylesheet">
+    <script src="../node_modules/@webformula/pax-components/local-dist/entry.js" type="module"></script>
     <script src="entry.js" type="module"></script>
   </head>
+
   <body>
-    <page-container></page-container>
+    <page-container mdw-flex></page-container>
+
+    <mdw-bottom-navigation>
+      <mdw-button class="mdw-icon" href="#/favorites">
+        <mdw-icon>star</mdw-icon>
+      </mdw-button>
+
+      <mdw-button class="mdw-icon mdw-current-link" href="#/contacts" alt-href="#/">
+        <mdw-icon>contacts</mdw-icon>
+      </mdw-button>
+
+      <mdw-button class="mdw-icon" href="#/recent">
+        <mdw-icon>schedule</mdw-icon>
+      </mdw-button>
+   </mdw-bottom-navigation>
   </body>
 </html>
