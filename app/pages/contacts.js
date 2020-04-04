@@ -1,12 +1,19 @@
 import { Page } from '/node_modules/@webformula/pax-core/index.js';
 import fata from '../fata.js';
+import '../components/contact-list.js';
 
 export default class Contacts extends Page {
   constructor() {
     super();
 
     this.debounced_filter = MDWUtils.debounce(this.filter.bind(this), 100);
-    this.contacts = fata.contacts.sort(this.alphabetical);
+    this.bound_onSelect = this.onSelect.bind(this);
+    this.selectedIndexesLength = 0;
+  }
+
+  connectedCallback() {
+    this.contactList.contacts = this.alphabeticalGroup(fata.contacts);
+    this.contactList.onSelect(this.bound_onSelect);
   }
 
   // page title. This returns from the page.build() method
@@ -18,7 +25,14 @@ export default class Contacts extends Page {
     return document.querySelector('contact-list');
   }
 
+  get topAppBarElement() {
+    return document.querySelector('mdw-top-app-bar');
+  }
+
   filter(value = '') {
+    if (value === this._lastValue) return;
+    this._lastValue = value;
+
     let contacts;
     if (value === '') {
       contacts = fata.contacts;
@@ -28,44 +42,90 @@ export default class Contacts extends Page {
         `${first_name}${last_name}${email}`.toLowerCase().includes(value)
       ));
     }
-    this.contacts = contacts.sort(this.alphabetical);
-    this.render();
+    this.contactList.contacts = this.alphabeticalGroup(contacts);
   }
 
-  alphabetical(a, b) {
+  alphabeticalGroup(arr) {
+    return Object.values(arr
+      .sort(this.alphabeticalSort)
+      .reduce((group, value) => {
+        const letter = value.last_name[0];
+        if (!group[letter]) group[letter] = {
+          header: letter,
+          items: []
+        };
+        group[letter].items.push(value);
+        return group;
+      }, {}));
+  }
+
+  alphabeticalSort(a, b) {
     if(a.last_name < b.last_name) { return -1; }
     if(a.last_name > b.last_name) { return 1; }
     return 0;
   }
 
+  onSelect(selectedIndexes) {
+    if (!selectedIndexes || !selectedIndexes.length) return this.topAppBarElement.notContextual();
+
+    this.selectedIndexesLength = selectedIndexes.length;
+    this.topAppBarElement.contextual();
+  }
+
+  deselectAll() {
+    this.contactList.deselectAll();
+  }
+
   template() {
     return /* html */`
       <header>
-        <mdw-top-app-bar class="mdw-prominent">
-          <div mdw-column mdw-flex>
-            <div mdw-flex mdw-row>
-              <div class="mdw-title">Contacts</div>
-            </div>
+        <mdw-top-app-bar mdw-prominent mdw-shrink>
+          <section mdw-flex>
+            <sub-section>
+              <div
+                mdw-not-contextual
+                class="mdw-title"
+                style="padding-left: 16px;"
+                mdw-animation-property="transform: scale(#)"
+                mdw-animation-start="1.25"
+                mdw-animation-end="0.75"
+              >Contacts</div>
+            </sub-section>
 
-            <div mdw-flex mdw-row>
-              <mdw-textfield id="search" class="mdw-shaped mdw-no-animation" style="width: 90%; margin-left: 5%;">
-                <mdw-icon class="pre-icon">search</mdw-icon>
-                <input placeholder="search" style="color: white" oninput="activePage.debounced_filter(this.value);" />
+            <sub-section>
+              <div mdw-contextual class="mdw-title" style="padding-left: 16px">
+                <mdw-bound-property>selectedIndexesLength</mdw-bound-property>
+                Selected
+              </div>
+
+              <mdw-textfield mdw-not-contextual mdw-flex id="search" class="mdw-shaped mdw-density-compact mdw-on-background mdw-focused">
+                <mdw-icon>search</mdw-icon>
+                <input placeholder="contacts" oninput="activePage.debounced_filter(this.value);" />
                 <mdw-icon class="post-icon" onclick="search.clear(); activePage.debounced_filter();">clear</mdw-icon>
               </mdw-textfield>
-            </div>
-          </div>
+            </sub-section>
+          </section>
+
+          <section mdw-fixed>
+            <sub-section>
+              <mdw-button mdw-not-contextual class="mdw-icon">
+                <mdw-icon>create</mdw-icon>
+              </mdw-button>
+
+              <mdw-button mdw-contextual class="mdw-icon">
+                <mdw-icon>delete</mdw-icon>
+              </mdw-button>
+
+              <mdw-button mdw-contextual class="mdw-icon" onclick="activePage.deselectAll()">
+                <mdw-icon>cancel</mdw-icon>
+              </mdw-button>
+            </sub-section>
+          </section>
         </mdw-top-app-bar>
       </header>
 
       <mdw-content>
-        <mdw-list class="mdw-two-line">
-          ${this.contacts.map(({ first_name, last_name, email, phone1, address, city, state, zip }) => /* html */`<mdw-list-item onclick="this.expand()">
-            <mdw-icon style="font-size: 42px;">account_circle</mdw-icon>
-            ${first_name}&nbsp;<b>${last_name}</b>
-
-          </mdw-list-item>`).join('')}
-        </mdw-list>
+        <contact-list></contact-list>
       </mdw-content>
     `;
   }

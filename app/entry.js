@@ -1,12 +1,13 @@
-import { router } from '/node_modules/@webformula/pax-core/index.js';
-import Contacts from './pages/contacts.js';
-import Recent from './pages/recent.js';
-import Favorites from './pages/favorites.js';
+import { isAuthenticated } from './services/authentication.js';
+import { router } from '../node_modules/@webformula/pax-core/index.js';
+import './pax-entry.js';
 
-router.addPageClass(Contacts, 'contacts');
-router.setRoot('contacts');
+router.interceptRouteChange((newUrl) => {
+  // block route changing from login if not authenticated
+  if (!isAuthenticated() && newUrl && newUrl.split('#')[1] !== 'login') return false;
+  return true;
+});
 
-router.addPageClass(Recent, 'recent');
-router.addPageClass(Favorites, 'favorites');
-
-router.init();
+document.addEventListener('DOMContentLoaded', () => {
+  if (!isAuthenticated()) router.hash = 'login';
+})

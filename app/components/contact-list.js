@@ -3,13 +3,47 @@ import { HTMLElementExtended } from '/node_modules/@webformula/pax-core/index.js
 customElements.define('contact-list', class extends HTMLElementExtended {
   constructor() {
     super();
+
+    this._onSelecteCallbacks = [];
     this._contacts = [];
     this.cloneTemplate();
+
+    this.bound_onSelectCallbacks = this.onSelectCallbacks.bind(this);
+  }
+
+  disconnectedCallback() {
+    this.listElement.removeEventListener('change', this.bound_onSelectCallbacks);
+  }
+
+  beforeRender() {
+    this.listElement.removeEventListener('change', this.bound_onSelectCallbacks);
+  }
+
+  afterRender() {
+    this.listElement.addEventListener('change', this.bound_onSelectCallbacks);
+  }
+
+
+  get listElement() {
+    return this.shadowRoot.querySelector('mdw-list');
   }
 
   set contacts(value = []) {
     this._contacts = value;
     this.render();
+  }
+
+
+  onSelect(callback) {
+    this._onSelecteCallbacks.push(callback);
+  }
+
+  onSelectCallbacks() {
+    this._onSelecteCallbacks.forEach(cb => cb(this.listElement.selected));
+  }
+
+  deselectAll() {
+    this.listElement.deselectAll();
   }
 
   styles() {
@@ -21,7 +55,22 @@ customElements.define('contact-list', class extends HTMLElementExtended {
 
   template() {
     return /* html */`
-      <mdw-list id="listOne">
+      <mdw-list class="mdw-two-line" mdw-select="multiple">
+        ${this._contacts.map(({ header, items }) => `
+          <div class="mdw-subheader">${header}</div>
+          ${items.map(({ first_name, last_name, email, phone1, address, city, state, zip }) => /* html */`<mdw-list-item onclick="this.expand()">
+            <mdw-icon style="font-size: 42px; color: #666;">account_circle</mdw-icon>
+            ${first_name}&nbsp;<strong>${last_name}</strong>
+            <mdw-checkbox class="mdw-list-item__meta"></mdw-checkbox>
+          </mdw-list-item>`).join('')}
+        `).join('')}
+      </mdw-list>
+    `;
+  }
+
+  template_old() {
+    return /* html */`
+      <mdw-list id="listOne" mdw-select="multiple">
         ${this._contacts.map(({ first_name, last_name, email, phone1, address, city, state, zip }) => /* html */`<mdw-list-item onclick="this.expand()">
           ${first_name} ${last_name}
 
