@@ -59,9 +59,11 @@ customElements.define('contact-list', class extends HTMLElementExtended {
         ${this._contacts.map(({ header, items }) => `
           <div class="mdw-subheader">${header}</div>
           ${items.map(({ first_name, last_name, email, phone1, address, city, state, zip }) => /* html */`<mdw-list-item onclick="this.expand()">
-            <mdw-icon style="font-size: 42px; color: #666;">account_circle</mdw-icon>
+            <mdw-checkbox class="mdw-large" style="margin-right: 6px;">
+              <mdw-icon mdw-unchecked>account_circle</mdw-icon>
+              <mdw-icon mdw-checked>check_circle</mdw-icon>
+            </mdw-checkbox>
             ${first_name}&nbsp;<strong>${last_name}</strong>
-            <mdw-checkbox class="mdw-list-item__meta"></mdw-checkbox>
           </mdw-list-item>`).join('')}
         `).join('')}
       </mdw-list>
