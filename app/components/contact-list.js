@@ -48,8 +48,8 @@ customElements.define('contact-list', class extends HTMLElementExtended {
 
   styles() {
     return /* css */`
-      @import url('../node_modules/@webformula/pax-components/local-dist/theme.css');
-      @import url('../node_modules/@webformula/pax-components/local-dist/entry.css');
+      @import url('../node_modules/@webformula/pax-components/dist/theme.css');
+      @import url('../node_modules/@webformula/pax-components/dist/entry.css');
     `;
   }
 

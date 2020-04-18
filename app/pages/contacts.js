@@ -124,7 +124,7 @@ export default class Contacts extends Page {
         </mdw-top-app-bar>
       </header>
 
-      <mdw-content>
+      <mdw-content mdw-no-scroll>
         <contact-list></contact-list>
       </mdw-content>
     `;
