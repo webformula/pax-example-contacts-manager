@@ -10,7 +10,7 @@ export default class Contacts extends Page {
     this.bound_onSelect = this.onSelect.bind(this);
     this.selectedIndexesLength = 0;
 
-    MDWTemplate.register(1, data => /* html */`
+    MDWTemplate.registerOnce(1, data => /* html */`
       <mdw-header>
         <span class="mdw-title" mdw-flex>${data.first_name} ${data.last_name}</span>
         <mdw-button class="mdw-icon" onclick="MDWScreen.close()">

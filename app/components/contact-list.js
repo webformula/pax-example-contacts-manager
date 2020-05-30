@@ -60,12 +60,12 @@ customElements.define('contact-list', class extends HTMLElementExtended {
   template() {
     return /* html */`
       <mdw-list class="mdw-two-line" mdw-select="multiple">
-        ${this.contacts.map(({ header, items }) => `
+        ${this.contacts.map(({ header, items }) => /* html */`
           <div class="mdw-subheader">${header}</div>
           ${items.map(item => /* html */`<mdw-list-item onclick="activePage.showChildScreen('${item.email}', this)">
             <mdw-checkbox class="mdw-large" style="margin-right: 6px;" onclick="event.stopPropagation()">
               <mdw-icon mdw-unchecked>account_circle</mdw-icon>
-              <mdw-icon mdw-checked>check_circle</mdw-icon>
+              <mdw-icon mdw-checked class="mdw-secondary">check_circle</mdw-icon>
             </mdw-checkbox>
             ${item.first_name}&nbsp;<strong>${item.last_name}</strong>
           </mdw-list-item>`).join('')}
