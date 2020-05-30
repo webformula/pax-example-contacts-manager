@@ -28,6 +28,10 @@ customElements.define('contact-list', class extends HTMLElementExtended {
     return this.shadowRoot.querySelector('mdw-list');
   }
 
+  get contacts() {
+    return this._contacts;
+  }
+
   set contacts(value = []) {
     this._contacts = value;
     this.render();
@@ -56,14 +60,14 @@ customElements.define('contact-list', class extends HTMLElementExtended {
   template() {
     return /* html */`
       <mdw-list class="mdw-two-line" mdw-select="multiple">
-        ${this._contacts.map(({ header, items }) => `
+        ${this.contacts.map(({ header, items }) => `
           <div class="mdw-subheader">${header}</div>
-          ${items.map(({ first_name, last_name, email, phone1, address, city, state, zip }) => /* html */`<mdw-list-item onclick="this.expand()">
-            <mdw-checkbox class="mdw-large" style="margin-right: 6px;">
+          ${items.map(item => /* html */`<mdw-list-item onclick="activePage.showChildScreen('${item.email}', this)">
+            <mdw-checkbox class="mdw-large" style="margin-right: 6px;" onclick="event.stopPropagation()">
               <mdw-icon mdw-unchecked>account_circle</mdw-icon>
               <mdw-icon mdw-checked>check_circle</mdw-icon>
             </mdw-checkbox>
-            ${first_name}&nbsp;<strong>${last_name}</strong>
+            ${item.first_name}&nbsp;<strong>${item.last_name}</strong>
           </mdw-list-item>`).join('')}
         `).join('')}
       </mdw-list>

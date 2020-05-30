@@ -9,6 +9,84 @@ export default class Contacts extends Page {
     this.debounced_filter = MDWUtils.debounce(this.filter.bind(this), 100);
     this.bound_onSelect = this.onSelect.bind(this);
     this.selectedIndexesLength = 0;
+
+    MDWTemplate.register(1, data => /* html */`
+      <mdw-header>
+        <span class="mdw-title" mdw-flex>${data.first_name} ${data.last_name}</span>
+        <mdw-button class="mdw-icon" onclick="MDWScreen.close()">
+          <mdw-icon>close</mdw-icon>
+        </mdw-button>
+      </mdw-header>
+
+      <mdw-content>
+        <div mdw-row>
+          <h6 style="margin-top: 8px; margin-bottom: 12px;">Info</h6>
+        </div>
+
+        <div mdw-row>
+          <mdw-icon style="margin-right: 12px; color: #666; line-height: 56px">person</mdw-icon>
+          <mdw-textfield mdw-flex>
+            <input placeholder="name" value="${data.first_name} ${data.last_name}" required />
+          </mdw-textfield>
+        </div>
+
+        <div mdw-row>
+          <mdw-icon style="margin-right: 12px; color: #666; line-height: 56px">email</mdw-icon>
+          <mdw-textfield mdw-flex>
+            <input placeholder="Email" value="${data.email}" type="email" required />
+          </mdw-textfield>
+        </div>
+
+        <div mdw-row>
+          <mdw-icon style="margin-right: 12px; color: #666; line-height: 56px">phone</mdw-icon>
+          <mdw-textfield mdw-flex>
+            <input placeholder="Phone" value="${data.phone1}" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required />
+          </mdw-textfield>
+        </div>
+
+        <mdw-divider style="margin-bottom: 24px; margin-top: 8px;"></mdw-divider>
+
+        <div mdw-row>
+          <mdw-icon style="margin-right: 12px; color: #666; line-height: 56px">place</mdw-icon>
+          <mdw-textfield mdw-flex>
+            <input placeholder="Address" value="${data.address}" />
+          </mdw-textfield>
+        </div>
+
+        <div mdw-row>
+          <div style="width: 36px;"></div>
+          <mdw-textfield mdw-flex>
+            <input placeholder="City" value="${data.city}" />
+          </mdw-textfield>
+        </div>
+
+        <!--
+        <div mdw-row>
+          <div style="width: 36px;"></div>
+          <mdw-select mdw-flex style="margin-right: 12px">
+            <select>
+              <option value="" disabled selected>State</option>
+              <option value="2">Pensylvania</option>
+              <option value="3">Texas</option>
+              <option value="4">Florida</option>
+              <option value="5">New jersey</option>
+            </select>
+          </mdw-select>
+
+          <mdw-textfield style="width: 120px">
+            <input placeholder="Zip" value="${data.zip}" />
+          </mdw-textfield>
+        </div>
+        -->
+
+        <mdw-divider style="margin-bottom: 24px; margin-top: 8px;"></mdw-divider>
+
+        <div mdw-column mdw-flex-position="start">
+          <mdw-button class="mdw-secondary">add to favorites</mdw-button>
+          <mdw-button class="mdw-secondary">share contact</mdw-button>
+        </div>
+      </mdw-content>
+    `);
   }
 
   connectedCallback() {
@@ -74,6 +152,21 @@ export default class Contacts extends Page {
 
   deselectAll() {
     this.contactList.deselectAll();
+  }
+
+  showChildScreen(contactEmail, target) {
+    const contact = fata.contacts.find(({ email }) => email === contactEmail);
+
+    MDWScreen.show({
+      animation: {
+        target,
+        type: 'height',
+        origin: 'center',
+        // opacity: true
+      },
+      templateId: 1,
+      templateData: contact
+    });
   }
 
   template() {
