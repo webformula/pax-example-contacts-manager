@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "run:js,html": "node --experimental-modules buildEntry.mjs",
+    "run:js,html::watch": "nodemon -x $1",
+    "mount:public": "mount ./node_modules/@webformula --to /@webformula",
+    "mount:src": "mount ./app --to /"
+  }
+}

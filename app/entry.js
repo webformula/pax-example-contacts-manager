@@ -1,5 +1,5 @@
+import { router } from '@webformula/pax-core/index.js';
 import { isAuthenticated } from './services/authentication.js';
-import { router } from '../node_modules/@webformula/pax-core/index.js';
 import './pax-entry.js';
 
 router.interceptRouteChange((newUrl) => {
@@ -10,4 +10,4 @@ router.interceptRouteChange((newUrl) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!isAuthenticated()) router.hash = 'login';
-})
+});

@@ -1,0 +1,10 @@
+{
+  "watch": [
+    "app"
+  ],
+  "ignore": [
+    "pax-entry.js",
+    "pax-templates.js"
+  ],
+  "ext": "js, html"
+}

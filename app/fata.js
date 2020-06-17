@@ -1,19 +1,16 @@
+/* eslint-disable quote-props */
+/* eslint-disable quotes */
 let contacts;
 
 export default new class {
-  constructor() {
-    // this._favorites = contacts.slice(0, 2);
-  }
-
   get contacts() {
-    return contacts
+    return contacts;
   }
 
   get favorites() {
     return contacts.slice(0, 2);
   }
-}
-
+};
 
 contacts = [
   {

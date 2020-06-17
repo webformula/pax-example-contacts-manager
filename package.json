@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server ./ -p 8080"
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "entry": "node --experimental-modules buildEntry.mjs"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,10 @@
     "@webformula/pax-core": "file:../pax-core"
   },
   "devDependencies": {
-    "http-server": "^0.12.1"
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "nodemon": "^2.0.4",
+    "snowpack": "^2.5.2"
   }
 }

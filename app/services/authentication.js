@@ -4,7 +4,7 @@ export function isAuthenticated() {
 
 export function authenticate(username, password) {
   if (username && password) setToken('token');
-};
+}
 
 function getToken() {
   return localStorage.getItem('token');

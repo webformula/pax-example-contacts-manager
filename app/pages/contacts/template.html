@@ -1,0 +1,45 @@
+<header>
+  <mdw-top-app-bar mdw-prominent mdw-shrink>
+    <section mdw-flex>
+      <sub-section>
+        <div mdw-not-contextual class="mdw-title" style="padding-left: 16px;"
+          mdw-animation-property="transform: scale(#)" mdw-animation-start="1.25" mdw-animation-end="0.75">contacts
+        </div>
+      </sub-section>
+
+      <sub-section>
+        <div mdw-contextual class="mdw-title" style="padding-left: 16px">
+          <mdw-bound-property>selectedIndexesLength</mdw-bound-property>
+          Selected
+        </div>
+
+        <mdw-textfield mdw-not-contextual mdw-flex id="search"
+          class="mdw-shaped mdw-density-compact mdw-on-background mdw-focused">
+          <mdw-icon>search</mdw-icon>
+          <input placeholder="contacts" oninput="activePage.debounced_filter(this.value);" />
+          <mdw-icon class="post-icon" onclick="search.clear(); activePage.debounced_filter();">clear</mdw-icon>
+        </mdw-textfield>
+      </sub-section>
+    </section>
+
+    <section mdw-fixed>
+      <sub-section>
+        <mdw-button mdw-not-contextual class="mdw-icon">
+          <mdw-icon>create</mdw-icon>
+        </mdw-button>
+
+        <mdw-button mdw-contextual class="mdw-icon">
+          <mdw-icon>delete</mdw-icon>
+        </mdw-button>
+
+        <mdw-button mdw-contextual class="mdw-icon" onclick="activePage.deselectAll()">
+          <mdw-icon>cancel</mdw-icon>
+        </mdw-button>
+      </sub-section>
+    </section>
+  </mdw-top-app-bar>
+</header>
+
+<mdw-content mdw-no-scroll>
+  <contact-list></contact-list>
+</mdw-content>
